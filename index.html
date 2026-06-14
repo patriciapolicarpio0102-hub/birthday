@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday,COACH!💚</title>
+    <!-- Cute Google Fonts matching the reference styling -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700&family=Sacramento&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #f1f7f0;
+            --mint-green: #c8e6c9;
+            --sage-green: #81c784;
+            --dark-green: #388e3c;
+            --button-green: #59979d; /* Accent teal/green color matching image 1 */
+            --soft-white: #ffffff;
+            --text-dark: #2e4a31;
+            --modal-bg: #e5ede4; /* Light sage backdrop color matching image 2 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* --- STAGE 1: THE ENVELOPE (Intro) --- */
+        #envelope-stage {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #d4edd4 0%, #a3d9a5 100%);
+            z-index: 100;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .mail-title {
+            font-family: 'Sacramento', cursive;
+            font-size: 3.5rem;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope {
+            position: relative;
+            width: 280px;
+            height: 180px;
+            background-color: #a5d6a7;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Front Flaps */
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 90px 140px 90px 0;
+            border-color: transparent #b2dfdb transparent transparent;
+            z-index: 2;
+        }
+
+        .envelope::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 90px 0 90px 140px;
+            border-color: transparent transparent transparent #b2dfdb;
+            z-index: 2;
+        }
+
+        .top-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 100px 140px 0 140px;
+            border-color: #81c784 transparent transparent transparent;
+            transform-origin: top;
+            transition: transform 0.4s ease;
+            z-index: 4;
+        }
+
+        .wax-seal {
+            position: absolute;
+            top: 75px;
+            left: 120px;
+            width: 40px;
+            height: 40px;
+            background-color: #c62828;
+            border-radius: 50%;
+            z-index: 5;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: gold;
+            font-size: 0.8rem;
+        }
+
+        .hint-text {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        /* --- STAGE 2: MAIN CONTENT --- */
+        #main-content {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            padding: 40px 20px;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 50px;
+        }
+
+        .main-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3rem;
+            color: var(--dark-green);
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #558b2f;
+        }
+
+        /* --- POLAROID PHOTO GALLERY --- */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 25px;
+            padding: 20px 10px;
+            margin-bottom: 40px;
+        }
+
+        .polaroid {
+            background-color: var(--soft-white);
+            padding: 10px 10px 25px 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+            transform: rotate(var(--angle));
+        }
+
+        .polaroid:hover {
+            transform: scale(1.1) rotate(0deg) !important;
+            z-index: 10;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 2px;
+            background-color: #e0e0e0;
+        }
+
+        .polaroid .caption {
+            font-family: 'Sacramento', cursive;
+            font-size: 1.4rem;
+            margin-top: 12px;
+            color: #424242;
+            font-weight: bold;
+        }
+
+        /* --- LETTER MODAL OVERLAY (Image 2 style) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .birthday-card-modal {
+            background-color: var(--modal-bg);
+            border-radius: 24px;
+            padding: 40px 35px;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            line-height: 1.8;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active .birthday-card-modal {
+            transform: scale(1);
+        }
+
+        .birthday-card-modal .salutation {
+            font-family: 'Sacramento', cursive;
+            font-size: 3rem;
+            color: #2e4a31;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .birthday-card-modal .greeting-tag {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2e4a31;
+            margin-bottom: 25px;
+        }
+
+        .birthday-card-modal p {
+            font-size: 1.05rem;
+            color: #3b5c3e;
+            margin-bottom: 20px;
+            text-align: justify;
+            text-align-last: center;
+        }
+
+        .birthday-card-modal .closing-tag {
+            font-weight: 700;
+            color: #2e4a31;
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+
+        .close-letter-btn {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #3b5c3e;
+            background-color: rgba(255, 255, 255, 0.6);
+            border: none;
+            padding: 8px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .close-letter-btn:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.05); opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-15px); }
+            60% { transform: translateY(-7px); }
+        }
+
+        @media (max-width: 480px) {
+            .main-title { font-size: 2.2rem; }
+            .gallery-container { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .polaroid img { height: 120px; }
+            .birthday-card-modal { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STAGE 1: THE ENVELOPE INTRO -->
+    <div id="envelope-stage" onclick="openEnvelope()">
+        <h1 class="mail-title">You got a mail! 💌</h1>
+        <div class="envelope-wrapper">
+            <div class="top-flap" id="flap"></div>
+            <div class="envelope"></div>
+            <div class="wax-seal">💚</div>
+        </div>
+        <p class="hint-text">Click the wax seal to open</p>
+    </div>
+
+    <!-- STAGE 2: MAIN GREEN THEMED CONTENT -->
+    <div id="main-content">
+        <header>
+            <h1 class="main-title">Happiest Birthday, Our Coach M!🥳🎉💐</h1>
+            <p class="subtitle">May God continue to bless you po.</p>
+            <p class="subtitle">Pat and Lyssa appreciate you so muchiiee😘💕.</p>
+            <p class="subtitle">(sorry na agad sa mga pics hahahahha)</p>
+        </header>
+
+        <!-- PHOTO GALLERY (20 Compressed/Fast Placeholders) -->
+        <div class="gallery-container">
+            <div class="polaroid" style="--angle: -3deg;"><img src="photo20.jpg" alt="Memory 1"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: 4deg;"><img src="photo2.jpg" alt="Memory 2"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: -2deg;"><img src="photo4(1).jpg" alt="Memory 3"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: 5deg;"><img src="photo21.jpg" alt="Memory 4"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: -5deg;"><img src="photo8(1).jpg" alt="Memory 5"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: 2deg;"><img src="photo5.jpg" alt="Memory 6"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: -4deg;"><img src="photo6.jpg" alt="Memory 7"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: 3deg;"><img src="photo3(1).jpg" alt="Memory 8"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: -3deg;"><img src="photo9.jpg" alt="Memory 9"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: 4deg;"><img src="photo10(1).jpg" alt="Memory 10"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: -2deg;"><img src="photo11.jpg" alt="Memory 11"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: 5deg;"><img src="photo12.jpg" alt="Memory 12"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: -4deg;"><img src="photo13(1).jpg" alt="Memory 13"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: 3deg;"><img src="photo14.jpg" alt="Memory 14"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: -5deg;"><img src="photo15.jpg" alt="Memory 15"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: 2deg;"><img src="photo16.jpg" alt="Memory 16"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: -3deg;"><img src="photo17(1).jpg" alt="Memory 17"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: 4deg;"><img src="photo18(1).jpg" alt="Memory 18"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: -2deg;"><img src="photo18(2).jpg" alt="Memory 19"><div class="caption"></div></div>
+            <div class="polaroid" style="--angle: 3deg;"><img src="photo30.jpg" alt="Memory 20"><div class="caption"></div></div>
+        </div>
+    </div>
+
+   
+    <!-- JAVASCRIPT FOR DYNAMIC ACTIONS -->
+    <script>
+        function openEnvelope() {
+            const flap = document.getElementById('flap');
+            const envelopeStage = document.getElementById('envelope-stage');
+            const mainContent = document.getElementById('main-content');
+
+            flap.style.transform = 'scaleY(-1) translateY(10px)';
+            
+            setTimeout(() => {
+                envelopeStage.style.opacity = '0';
+                envelopeStage.style.transform = 'translateY(-100vh)';
+                
+                mainContent.style.display = 'block';
+                setTimeout(() => {
+                    mainContent.style.opacity = '1';
+                    document.body.style.overflowY = 'auto';
+                }, 50);
+            }, 600);
+        }
+
+        // Function to Open/Close the Modal Letter Card
+        function toggleLetter(show) {
+            const modal = document.getElementById('letterModal');
+            if (show) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Stop background scrolling when letter is open
+            } else {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';  // Restore scrolling
+            }
+        }
+
+        // Lock background scrolling on fresh load while intro envelope is up
+        document.body.style.overflowY = 'hidden';
+    </script>
+</body>
+</html>
